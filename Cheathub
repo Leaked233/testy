@@ -1,0 +1,55 @@
+local Window = Rayfield:CreateWindow({
+   Name = "Cheathub",
+   LoadingTitle = "Cheathub",
+   LoadingSubtitle = "by Cheathub",
+   ConfigurationSaving = {
+      Enabled = false,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "cheatub"
+   },
+   Discord = {
+      Enabled = false,
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "the key is Cheathub",
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"https://pastebin.com/X9vrsDZ5"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local MainTab = Window:CreateTab("Mags", nil) -- Title, Image
+local Button = MainTab:CreateButton({
+   Name = "W",
+   Callback = function()
+       local plr = game.Players.LocalPlayer
+    local rs = game:GetService("RunService")
+
+    function magBall(ball)
+        if ball and plr.Character then
+            local leftArm = plr.Character:FindFirstChild("Left Arm")
+            if leftArm then
+                firetouchinterest(leftArm, ball, 0)
+                task.wait()
+                firetouchinterest(leftArm, ball, 1)
+            end
+        end
+    end
+
+    rs.Heartbeat:Connect(function()
+        local footballs = workspace:FindPartsInRegion3(Region3.new(plr.Character.HumanoidRootPart.Position - Vector3.new(50, 50, 50), plr.Character.HumanoidRootPart.Position + Vector3.new(50, 50, 50)), nil, math.huge)
+        for _, football in ipairs(footballs) do
+            if football.Name == "Football" and football:IsA("BasePart") and (football.Position - plr.Character.HumanoidRootPart.Position).Magnitude < 50 then
+                magBall(football)
+            end
+        end
+    end)
+end)
+   end,
+})
